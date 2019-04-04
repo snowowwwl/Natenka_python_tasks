@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 5.2a
 
 Переделать скрипт из задания 5.2 таким образом, чтобы,
@@ -17,7 +17,7 @@ Enter parameter name: ios
 
 Все задания надо выполнять используя только пройденные темы.
 То есть эту задачу можно решить без использования условия if.
-'''
+"""
 
 london_co = {
     'r1': {
@@ -44,3 +44,7 @@ london_co = {
         'routing': True
     }
 }
+
+NAME = input("Enter device name(r1, r2 or sw1):")
+DETAIL = input("Enter what additional information you need(location, vendor, model, ios, ip, vlans, routing ):")
+print(london_co[NAME][DETAIL])

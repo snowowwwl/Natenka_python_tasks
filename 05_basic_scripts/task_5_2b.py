@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 5.2b
 
 Переделать скрипт из задания 5.2a таким образом, чтобы, при запросе параметра,
@@ -17,7 +17,7 @@ Enter parameter name (ios, model, vendor, location, ip): ip
 
 Все задания надо выполнять используя только пройденные темы.
 То есть эту задачу можно решить без использования условия if.
-'''
+"""
 
 london_co = {
     'r1': {
@@ -44,3 +44,11 @@ london_co = {
         'routing': True
     }
 }
+
+
+NAME = input("Enter device name(r1, r2 or sw1): ")
+NAME_list = list((london_co[NAME].keys()))
+NAME_str =', '.join(NAME_list)
+
+DETAIL = input("Enter what additional information you need ({}):".format(NAME_str) )
+print(london_co[NAME][DETAIL])
