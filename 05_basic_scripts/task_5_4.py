@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 5.4
 
 Найти индекс последнего вхождения элемента.
@@ -11,9 +11,15 @@
 Для этого надо запросить у пользователя сначала ввод числа из списка num_list и затем вывести индекс его последнего появления в списке. А затем аналогично для списка word_list.
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
-'''
+"""
 
 num_list = [10, 2, 30, 100, 10, 50, 11, 30, 15, 7]
 word_list = [
     'python', 'ruby', 'perl', 'ruby', 'perl', 'python', 'ruby', 'perl'
 ]
+print("Enter number from this list ({}): ".format(set(num_list)))
+NUM = input()
+print(len(num_list) - num_list[::-1].index(int(NUM)) - 1)
+print("Enter word from this list ({}): ".format(set(word_list)))
+WORD = input()
+print(len(word_list) - word_list[::-1].index(WORD) - 1)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 5.3
 
 Скрипт должен запрашивать у пользователя:
@@ -46,8 +46,26 @@ interface Fa0/7
 switchport trunk encapsulation dot1q
 switchport mode trunk
 switchport trunk allowed vlan 2,3,4,5
-'''
+"""
 
+INT_MODE = input("Enter interface mode (access/trunk): ")
+INT = input("Enter interface type and number: ")
+VLANS = input("Enter vlan(s): ")
+
+config_dict = {
+    'access': [
+        'switchport mode access',
+        'switchport access vlan {}',
+        'switchport nonegotiate',
+        'spanning-tree portfast',
+        'spanning-tree bpduguard enable'
+    ],
+    'trunk': [
+        'switchport trunk encapsulation dot1q',
+        'switchport mode trunk',
+        'switchport trunk allowed vlan {}'
+    ]
+}
 access_template = [
     'switchport mode access', 'switchport access vlan {}',
     'switchport nonegotiate', 'spanning-tree portfast',
@@ -58,3 +76,7 @@ trunk_template = [
     'switchport trunk encapsulation dot1q', 'switchport mode trunk',
     'switchport trunk allowed vlan {}'
 ]
+
+print('\n' + '-' * 30)
+print('interface {}'.format(INT))
+print('\n'.join(config_dict[INT_MODE]).format(VLANS))
