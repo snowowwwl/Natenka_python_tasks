@@ -36,21 +36,14 @@ IP = IPMASK.split('/')[0]
 MASK = IPMASK.split('/')[1]
 
 IP_list = IP.split('.')
-IP_list_int = [int(ip) for ip in IP_list]
-IP_bin = []
-for i in range(len(IP_list_int)):
-    IP_bin.append(bin(IP_list_int[i])[2:].zfill(8))
+IP_bin = [bin(int(ip))[2:].zfill(8) for ip in IP_list]
 
-MASK_bin = '1'*int(MASK) + '0'*(32 - int(MASK))
-i = 0
-MASK_bin_list = []
-while(i < len(MASK_bin)):
-    MASK_bin_list.append(MASK_bin[i:i+8])
-    i += 8
+ones=int(MASK)//8
+ones_nulls = int(MASK)%8
+MASK_bin = ('1'*8+'.')*ones +('1'*ones_nulls) + ('0'*(8-ones_nulls)) + '.' +('0'*8+'.')*(3-ones)
+MASK_bin_list = MASK_bin.rstrip('.').split('.')
 
-NET = []
-for i in range(len(IP_list_int)):
-    NET.append(int(IP_bin[i], 2) & int(MASK_bin_list[i], 2))
+NET = [int(IP_bin[i], 2) & int(MASK_bin_list[i], 2) for i in range(4)]
 
 ip_template = '''
 Network:
@@ -68,4 +61,4 @@ Mask:
 '''
 
 print(ip_template.format(NET[0], NET[1], NET[2], NET[3]))
-print(m_t.format(MASK, int(MASK_bin[0:8], 2), int(MASK_bin[8:16], 2), int(MASK_bin[16:24], 2), int(MASK_bin[24:32], 2)))
+print(m_t.format(MASK, int(MASK_bin_list[0],2), int(MASK_bin_list[1], 2), int(MASK_bin_list[2], 2), int(MASK_bin_list[3], 2)))

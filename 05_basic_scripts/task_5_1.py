@@ -27,7 +27,10 @@ MASK = IPMASK.split('/')[1]
 IP_list = IP.split('.')
 IP_list_int = [int(ip) for ip in IP_list]
 
-MASK_bin = '1'*int(MASK) + '0'*(32 - int(MASK))
+ones=int(MASK)//8
+ones_nulls = int(MASK)%8
+MASK_bin = ('1'*8+'.')*ones +('1'*ones_nulls) + ('0'*(8-ones_nulls)) + '.' +('0'*8+'.')*(3-ones)
+MASK_bin_list = MASK_bin.rstrip('.').split('.')
 
 ip_template = '''
 Network:
@@ -45,4 +48,4 @@ Mask:
 '''
 
 print(ip_template.format(IP_list_int[0], IP_list_int[1], IP_list_int[2], IP_list_int[3]))
-print(m_t.format(MASK, int(MASK_bin[0:8], 2), int(MASK_bin[8:16], 2), int(MASK_bin[16:24], 2), int(MASK_bin[24:32], 2)))
+print(m_t.format(MASK, int(MASK_bin_list[0],2), int(MASK_bin_list[1], 2), int(MASK_bin_list[2], 2), int(MASK_bin_list[3], 2)))
