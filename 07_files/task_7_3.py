@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 7.3
 
 Скрипт должен обрабатывать записи в файле CAM_table.txt таким образом чтобы:
@@ -17,4 +17,12 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
-'''
+"""
+
+with open('CAM_table.txt', 'r') as f:
+    for line in f:
+        if line.count('.') == 2:
+            line_list = line.split()
+            line_list.pop(2)
+            vlan, mac, intf = [i for i in line_list]
+            print("{:10} {:20} {:10}".format(vlan, mac, intf))
