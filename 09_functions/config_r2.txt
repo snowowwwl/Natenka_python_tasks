@@ -1,0 +1,18 @@
+interface Ethernet0/3.100
+ encapsulation dot1Q 100
+ xconnect 10.2.2.2 12100 encapsulation mpls
+  backup peer 10.4.4.4 14100
+  backup delay 1 1
+router bgp 100
+ bgp log-neighbor-changes
+ bgp bestpath igp-metric ignore
+ neighbor 10.2.2.2 remote-as 100
+ neighbor 10.2.2.2 update-source Loopback0
+ neighbor 10.2.2.2 next-hop-self
+ neighbor 10.4.4.4 remote-as 40
+ !
+ address-family vpnv4
+  neighbor 10.2.2.2 activate
+  neighbor 10.2.2.2 send-community both
+  exit-address-family
+!         
