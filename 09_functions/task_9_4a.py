@@ -49,3 +49,48 @@ def check_ignore(command, ignore):
 
     '''
     return any(word in command for word in ignore)
+
+def level(string):
+    if string[0] == ' ' and string[1] == ' ':
+        level = 2
+    elif string[0] == ' ' and not string[1] == ' ':
+        level = 1
+    else: level =0
+    return level
+
+def config_as_dict(file):
+    port_dict1 = {}
+    port_dict2 = {}
+    with open(file, 'r') as f:
+        config_list = f.readlines()
+        for i in range(len(config_list)):
+            commands1 = []
+            commands2 = []
+            line = config_list[i]
+            if check_ignore(line,ignore):
+                pass
+            elif '!' in line:
+                pass
+            elif level(line) == 0:
+                key1 = line.strip('\n')
+                flag = 0
+                for l in config_list[i+1::]:
+                    if level(l) == 1:
+                        commands1.append(l.strip('\n'))
+                        key2 = l.strip('\n')
+                    elif level(l) == 2:
+                        flag = 2
+                        commands2.append(l.strip('\n'))
+                    else:
+                        break
+                if flag == 2:
+                    port_dict2 = {key: [] for key in commands1}
+                    port_dict2[key2] = commands2
+                    port_dict1[key1] = port_dict2
+                else:
+                    port_dict1[key1] = commands1
+
+
+    return port_dict1
+
+print(config_as_dict('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/09_functions/config_r1.txt'))
