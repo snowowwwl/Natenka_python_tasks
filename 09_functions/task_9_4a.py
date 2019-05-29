@@ -37,6 +37,7 @@
 
 ignore = ['duplex', 'alias', 'Current configuration']
 
+from pprint import pprint
 
 def check_ignore(command, ignore):
     '''
@@ -58,10 +59,10 @@ def level(string):
     else: level =0
     return level
 
-def config_as_dict(file):
+def config_as_dict(configfile):
     port_dict1 = {}
     port_dict2 = {}
-    with open(file, 'r') as f:
+    with open(configfile, 'r') as f:
         config_list = f.readlines()
         for i in range(len(config_list)):
             commands1 = []
@@ -69,7 +70,7 @@ def config_as_dict(file):
             line = config_list[i]
             if check_ignore(line,ignore):
                 pass
-            elif '!' in line:
+            elif line.startswith('!'):
                 pass
             elif level(line) == 0:
                 key1 = line.strip('\n')
@@ -93,4 +94,5 @@ def config_as_dict(file):
 
     return port_dict1
 
-print(config_as_dict('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/09_functions/config_r1.txt'))
+
+pprint(config_as_dict('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/09_functions/config_r1.txt'))

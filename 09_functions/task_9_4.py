@@ -21,6 +21,8 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
 
+from pprint import pprint
+
 ignore = ['duplex', 'alias', 'Current configuration',]
 
 
@@ -38,16 +40,16 @@ def ignore_command(command, ignore):
     return any(word in command for word in ignore)
 
 
-def config_as_dict(file):
+def config_as_dict(configfile):
     port_dict = {}
-    with open(file, 'r') as f:
+    with open(configfile, 'r') as f:
         config_list = f.readlines()
         for i in range(len(config_list)):
             commands = []
             line = config_list[i]
             if ignore_command(line,ignore):
                 pass
-            elif '!' in line:
+            elif line.startswith('!'):
                 pass
             elif not line.startswith(' '):
                 key = line.strip('\n')
@@ -60,6 +62,6 @@ def config_as_dict(file):
     return port_dict
 
 
-print(config_as_dict('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/09_functions/config_sw1.txt'))
+pprint(config_as_dict('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/09_functions/config_sw1.txt'))
 
 
