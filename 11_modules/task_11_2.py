@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 11.2
 
 С помощью функции parse_cdp_neighbors из задания 11.1
@@ -25,4 +25,15 @@
 > И модуль python для работы с graphviz:
 > pip install graphviz
 
-'''
+"""
+
+import sys
+sys.path.insert(0, 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/11_modules/')
+from draw_network_graph import draw_topology
+from task_11_1 import parse_cdp_neighbors
+import os
+os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+
+with open('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/11_modules/sw1_sh_cdp_neighbors.txt', 'r') as f:
+    showcdpne = f.read()
+draw_topology(parse_cdp_neighbors(showcdpne), output_filename='img/topology')

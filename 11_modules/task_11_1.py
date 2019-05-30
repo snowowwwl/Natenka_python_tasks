@@ -69,4 +69,5 @@ def parse_cdp_neighbors(cdpstring):
 
 with open('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/11_modules/sw1_sh_cdp_neighbors.txt', 'r') as f:
     showcdpne = f.read()
+if __name__ == "__main__":
     print(parse_cdp_neighbors(showcdpne))
