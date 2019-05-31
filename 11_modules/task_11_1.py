@@ -45,25 +45,31 @@ def parse_cdp_neighbors(cdpstring):
     flag = 0
     cdp_list = cdpstring.split('\n')
     cdp_list.pop(-1)
-    local_device = cdp_list[0].split('>')[0]
+    local_device = str()
     for line in cdp_list:
         if line.startswith('\n'):
             pass
         elif line.startswith("Device ID"):
             flag = 1
+        elif '>' in line:
+            local_device = line.split('>')[0]
+            print(local_device)
         else:
             if flag == 1:
                 device_list = line.split()
-                remote_device = device_list[0]
-                local_port = device_list[1]+device_list[2]
-                remote_port = device_list[8]+device_list[9]
-                local_ports.append(local_port)
-                remote_ports.append(remote_port)
-                local_devices.append(local_device)
-                remote_devices.append(remote_device)
-                cdpkey = list(zip(local_devices, local_ports))
-                cdpvalue = list(zip(remote_devices, remote_ports))
-                cdp_ne_dict = dict(zip(cdpkey, cdpvalue))
+                if len(device_list)>0:
+                    remote_device = device_list[0]
+                    local_port = device_list[1]+device_list[2]
+                    remote_port = device_list[-2]+device_list[-1]
+                    local_ports.append(local_port)
+                    remote_ports.append(remote_port)
+                    local_devices.append(local_device)
+                    remote_devices.append(remote_device)
+                    cdpkey = list(zip(local_devices, local_ports))
+                    cdpvalue = list(zip(remote_devices, remote_ports))
+                    cdp_ne_dict = dict(zip(cdpkey, cdpvalue))
+                else:
+                    pass
     return cdp_ne_dict
 
 
