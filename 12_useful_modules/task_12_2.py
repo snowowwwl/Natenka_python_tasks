@@ -32,11 +32,11 @@ IP-адреса могут быть в формате:
 
 from task_12_1 import check_ip_addresses
 from pprint import pprint
-import subprocess
 import ipaddress
 
 
-iplist = ['8.8.8.8-8.8.8.9', '192.168.1.1-192.168.1.3','10.10.1.1']
+iplist = ['8.8.8.8-8.8.8.9', '192.168.1.1-192.168.1.3', '10.10.1.1']
+
 
 def check_ip_availability(list_of_ip):
     print("Please waiting...")
@@ -55,9 +55,3 @@ def check_ip_availability(list_of_ip):
 
 
 pprint(check_ip_availability(iplist))
-
-
-
-
-
-
