@@ -41,5 +41,6 @@ def check_ip_addresses(list_of_ip):
 
 
 iplist = ['8.8.8.8', '192.168.1.1', '5.5.5.5', '10.10.10.10', '255.255.255.255', 'a']
-print(check_ip_addresses(iplist))
+if __name__ == "__main__":
+    print(check_ip_addresses(iplist))
 
