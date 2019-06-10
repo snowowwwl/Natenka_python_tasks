@@ -53,5 +53,5 @@ def check_ip_availability(list_of_ip):
             rangeiplist.append(ip)
     return check_ip_addresses(rangeiplist)
 
-
-pprint(check_ip_availability(iplist))
+if __name__ == "__main__":
+    pprint(check_ip_availability(iplist))
