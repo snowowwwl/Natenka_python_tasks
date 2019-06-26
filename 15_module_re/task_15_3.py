@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 15.3
 
 Создать функцию parse_cfg, которая ожидает как аргумент имя файла,
@@ -21,4 +21,17 @@
 Обратите внимание, что в данном случае, можно не проверять корректность IP-адреса,
 диапазоны адресов и так далее, так как обрабатывается вывод команды, а не ввод пользователя.
 
-'''
+"""
+import re
+from pprint import pprint
+
+
+def parse_cfg(filename):
+    ### return ip/mask in list of tuples ###
+    regexp = 'ip address (\d+\.\d+\.\d+\.\d+) (\d+\.\d+\.\d+\.\d+)'
+    with open(filename) as f:
+        ipmasklist = re.findall(regexp, f.read())
+    return ipmasklist
+
+
+pprint(parse_cfg('config_r1.txt'))
