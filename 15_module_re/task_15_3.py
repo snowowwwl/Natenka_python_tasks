@@ -23,11 +23,12 @@
 
 """
 import re
+
 from pprint import pprint
 
 
 def parse_cfg(filename):
-    ### return ip/mask in list of tuples ###
+    # return ip/mask in list of tuples #
     regexp = 'ip address (\d+\.\d+\.\d+\.\d+) (\d+\.\d+\.\d+\.\d+)'
     with open(filename) as f:
         ipmasklist = re.findall(regexp, f.read())
