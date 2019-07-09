@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 17.1
 
 В этом задании нужно:
@@ -41,28 +41,51 @@
 Вы можете раскомментировать строку print(sh_version_files), чтобы посмотреть содержимое списка.
 
 Кроме того, создан список заголовков (headers), который должен быть записан в CSV.
-'''
+"""
 
 import glob
 import re
-from pprint import pprint
+import csv
 
 
 sh_version_files = glob.glob('sh_vers*')
 headers = ['hostname', 'ios', 'image', 'uptime']
+hostname_list = list()
+hostname_list.append(headers)
+
 
 def parse_sh_version(sh_ver_output):
     output = sh_ver_output.split('\n')
     for lines in output:
-        match = re.search('Version (?P<ios>.+),|System image file is "(?P<image>.+)"|router uptime is (?P<uptime>.+)', lines)
+        match = re.search('Version (?P<ios>.+),|'
+                          'System image file is "(?P<image>.+)"|'
+                          'router uptime is (?P<uptime>.+)', lines)
         if match:
             if match.lastgroup == 'ios':
-                ios = match.group(match.lastgroup)
+                ios: str = match.group(match.lastgroup)
             if match.lastgroup == 'image':
-                image = match.group(match.lastgroup)
+                image: str = match.group(match.lastgroup)
             if match.lastgroup == 'uptime':
-                uptime = match.group(match.lastgroup)
+                uptime: str = match.group(match.lastgroup)
     return ios, image, uptime
 
-with open(sh_version_files[0]) as f:
-    pprint(parse_sh_version(f.read()))
+
+def write_to_csv(filename, list_of_hosts):
+    with open(filename, 'w', newline='') as f:
+        writer = csv.writer(f)
+        for row in list_of_hosts:
+            writer.writerow(row)
+
+
+for file_name in sh_version_files:
+    host_list = []
+    host = re.search('version_(.+).txt', file_name)
+    with open(file_name) as fn:
+        ios_image_uptime = list(parse_sh_version(fn.read()))
+        host_list.append(host.group(1))
+        host_list = host_list+ios_image_uptime
+    hostname_list.append(host_list)
+write_to_csv('routers_inventory.csv', hostname_list)
+
+with open('routers_inventory.csv') as f:
+    print(f.read())
