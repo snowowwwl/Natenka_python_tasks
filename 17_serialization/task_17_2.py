@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 17.2
 
 Создать функцию parse_sh_cdp_neighbors, которая обрабатывает
@@ -23,4 +23,25 @@ R6           Fa 0/2          143           R S I           2811       Fa 0/0
 
 
 Проверить работу функции на содержимом файла sh_cdp_n_sw1.txt
-'''
+"""
+import re
+from pprint import pprint
+
+def parse_sh_cdp_neighbors(shcdpne):
+    final_dict = {}
+    int_ne_dict = {}
+    shcdpne_list = shcdpne.split('\n')
+    for line in shcdpne_list:
+        hostname = re.match('.+>',line)
+        x = re.match('(\w+) +(.+?) +\d+ +\w \w \w +\d+ +(.+)', line)
+        if x:
+            ne_dict = {}
+            ne_dict[x.group(1)] = x.group(3)
+            int_ne_dict[x.group(2)] = ne_dict
+        if hostname:
+            final_dict[hostname.group().strip('>')] = int_ne_dict
+    return final_dict
+
+
+with open('sh_cdp_n_sw1.txt') as f:
+    pprint(parse_sh_cdp_neighbors(f.read()))
