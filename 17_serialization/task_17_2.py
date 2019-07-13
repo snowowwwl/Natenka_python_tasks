@@ -33,7 +33,7 @@ def parse_sh_cdp_neighbors(shcdpne):
     shcdpne_list = shcdpne.split('\n')
     for line in shcdpne_list:
         hostname = re.match('.+>',line)
-        x = re.match('(\w+) +(.+?) +\d+ +\w \w \w +\d+ +(.+)', line)
+        x = re.match('(\w+) +(.+?) +\d+ +\w \w \w? +.+? +(.+)', line)
         if x:
             ne_dict = {}
             ne_dict[x.group(1)] = x.group(3)
@@ -42,6 +42,6 @@ def parse_sh_cdp_neighbors(shcdpne):
             final_dict[hostname.group().strip('>')] = int_ne_dict
     return final_dict
 
-
-with open('sh_cdp_n_sw1.txt') as f:
-    pprint(parse_sh_cdp_neighbors(f.read()))
+if __name__ == "__main__":
+    with open('sh_cdp_n_r1.txt') as f:
+        pprint(parse_sh_cdp_neighbors(f.read()))
