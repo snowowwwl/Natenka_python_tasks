@@ -16,7 +16,8 @@
 Теперь необходимо расширить функциональность таким образом:
 * если скрипт был вызван без аргументов, вывести всё содержимое таблицы dhcp более компактно (как в примере ниже)
 * если скрипт был вызван с двумя аргументами, вывести информацию из таблицы dhcp, которая соответствует полю и значению
-* если скрипт был вызван с любым другим количеством аргументов, вывести сообщение, что скрипт поддерживает только два или ноль аргументов
+* если скрипт был вызван с любым другим количеством аргументов, вывести сообщение, что скрипт поддерживает только два
+или ноль аргументов
 
 > Обработка некорректного ввода аргумента будет выполняться в следующем задании
 
@@ -75,12 +76,11 @@ $ python get_data.py vlan
 
 from tabulate import tabulate
 import sqlite3
-import sys
 db_filename = 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/18_db/task_18_1/dhcp_snooping.db'
 
 
-def get_data(key = None, value = None):
-    table_list=[]
+def get_data(key=None, value=None):
+    table_list = []
     if key and value:
         keys = ['mac', 'ip', 'vlan', 'interface', 'switch']
         keys.remove(key)
@@ -109,6 +109,7 @@ def get_data(key = None, value = None):
         for row in conn.execute('select * from dhcp'):
             table_list.append(row)
         print(tabulate(table_list))
+
 
 get_data('ip', '10.1.10.2')
 get_data('vlan', '10')
