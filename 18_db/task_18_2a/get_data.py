@@ -71,15 +71,14 @@ $ python get_data.py vlan
 
 from tabulate import tabulate
 import sqlite3
-db_filename = 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/18_db/task_18_1/dhcp_snooping.db'
+db_filename = 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/18_db/task_18_3/dhcp_snooping.db'
 
 
 def get_data(key=None, value=None):
     table_list = []
-    if key and value:
-        keys = ['mac', 'ip', 'vlan', 'interface', 'switch']
+    keys = ['mac', 'ip', 'vlan', 'interface', 'switch', 'active']
+    if key in keys and value:
         keys.remove(key)
-
         conn = sqlite3.connect(db_filename)
         # Позволяет далее обращаться к данным в колонках, по имени колонки
         conn.row_factory = sqlite3.Row
@@ -98,9 +97,12 @@ def get_data(key=None, value=None):
         print("Please enter two or null arguments")
     elif key and not value:
         print("Please enter two or null arguments")
+    elif key not in keys and value:
+        print("Such key is not exist. Please enter one of this keys: ", format((', ').join(keys)))
     else:
         conn = sqlite3.connect(db_filename)
         print('\nThere are such rows in table:')
         for row in conn.execute('select * from dhcp'):
             table_list.append(row)
         print(tabulate(table_list))
+

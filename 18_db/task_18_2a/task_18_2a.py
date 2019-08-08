@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 18.2a
 
 Дополнить скрипт get_data.py из задания 18.2
@@ -17,4 +17,9 @@ $ python get_data_ver1.py vln 10
 Данный параметр не поддерживается.
 Допустимые значения параметров: mac, ip, vlan, interface, switch
 
-'''
+"""
+from get_data import get_data
+
+
+
+get_data()
