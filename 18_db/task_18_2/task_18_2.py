@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 18.2
 
 На основе файла get_data_ver1.py из раздела, создать скрипт get_data.py.
@@ -71,4 +71,47 @@ switch      : sw2
 $ python get_data.py vlan
 Пожалуйста, введите два или ноль аргументов
 
-'''
+"""
+
+from tabulate import tabulate
+import sqlite3
+import sys
+db_filename = 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/18_db/task_18_1/dhcp_snooping.db'
+
+
+def get_data(key = None, value = None):
+    table_list=[]
+    if key and value:
+        keys = ['mac', 'ip', 'vlan', 'interface', 'switch']
+        keys.remove(key)
+
+        conn = sqlite3.connect(db_filename)
+        # Позволяет далее обращаться к данным в колонках, по имени колонки
+        conn.row_factory = sqlite3.Row
+
+        print('\nDetailed information for host(s) with', key, value)
+        print('-' * 40)
+
+        query = 'select * from dhcp where {} = ?'.format(key)
+        result = conn.execute(query, (value,))
+
+        for row in result:
+            for k in keys:
+                print('{:12}: {}'.format(k, row[k]))
+            print('-' * 40)
+    elif not key and value:
+        print("Please enter two or null arguments")
+    elif key and not value:
+        print("Please enter two or null arguments")
+    else:
+        conn = sqlite3.connect(db_filename)
+        print('\nThere are such rows in table:')
+        for row in conn.execute('select * from dhcp'):
+            table_list.append(row)
+        print(tabulate(table_list))
+
+get_data('ip', '10.1.10.2')
+get_data('vlan', '10')
+get_data('vlan')
+get_data('10')
+get_data()
