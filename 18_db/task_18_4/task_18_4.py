@@ -46,3 +46,11 @@ Inactive values:
 00:A9:BB:3D:D6:58  10.1.10.20        10    FastEthernet0/7    sw2         0
 
 '''
+
+from get_data import get_data
+
+get_data('ip', '10.1.10.2')
+get_data('vlan', '10')
+get_data('vlan')
+get_data('10')
+get_data()
