@@ -14,13 +14,29 @@
 можно сравнивать между собой.
 
 '''
-
+import datetime as dt
 from datetime import timedelta, datetime
+import glob
+from create_db import create_db
+from add_data import add_data
+from get_data import get_data
+import sqlite3
 
 now = datetime.today().replace(microsecond=0)
 week_ago = now - timedelta(days=7)
 
-#print(now)
-#print(week_ago)
-#print(now > week_ago)
-#print(str(now) > str(week_ago))
+db_filename = 'dhcp_snooping.db'
+schema_filename = 'dhcp_snooping_schema.sql'
+dhcp_snoop_files = glob.glob('sw*_dhcp_snooping.txt')
+
+hostnames = ['sw1', 'sw2', 'sw3']
+create_db(db_filename, schema_filename)
+add_data(dhcp_snoop_files, hostnames)
+get_data()
+conn = sqlite3.connect(db_filename)
+conn.execute("update dhcp set last_active = '2019-08-01 15:08:22' where switch = 'sw1'")
+conn.commit()
+conn.close()
+get_data()
+add_data(dhcp_snoop_files, hostnames)
+get_data()

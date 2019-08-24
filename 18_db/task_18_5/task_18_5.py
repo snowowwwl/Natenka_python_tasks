@@ -28,6 +28,20 @@
 '''
 
 import datetime
+import glob
+from create_db import create_db
+from add_data import add_data
+from get_data import get_data
 
 now = str(datetime.datetime.today().replace(microsecond=0))
-#print(now)
+print(now)
+
+db_filename = 'dhcp_snooping.db'
+schema_filename = 'dhcp_snooping_schema.sql'
+dhcp_snoop_files = glob.glob('sw*_dhcp_snooping.txt')
+
+hostnames = ['sw1', 'sw2', 'sw3']
+create_db(db_filename, schema_filename)
+add_data(dhcp_snoop_files, hostnames)
+
+get_data()
