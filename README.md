@@ -1,5 +1,5 @@
 # Natenka_python_tasks
 Repository for completed tasks from Natenka python book
-This is my first python tasks.
-test github
+https://pyneng.readthedocs.io/ru/latest/
+Tasks from https://github.com/natenka/pyneng-examples-exercises/
 
