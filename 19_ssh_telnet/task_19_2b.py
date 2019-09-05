@@ -38,7 +38,47 @@ R1(config)#i
 В файле задания заготовлены команды с ошибками и без:
 '''
 
-commands_with_errors = ['logging 0255.255.1', 'logging', 'i']
-correct_commands = ['logging buffered 20010', 'ip http server']
 
+import netmiko
+from netmiko import ConnectHandler
+import yaml
+from pprint import pprint
+
+with open('devices.yaml') as f:
+    devices = yaml.safe_load(f)
+pprint(devices)
+bad_dict = {}
+good_dict = {}
+commands_with_errors = ['show ip int br', 'show run' ]
+correct_commands = ['interface',
+            'export compact']
 commands = commands_with_errors + correct_commands
+
+def send_show_command(dev, com, verbose = 'yes'):
+    good_result_dict = {}
+    bad_result_dict = {}
+    with ConnectHandler(**dev) as ssh:
+        ssh.enable()
+        for command in com:
+            result = ssh.send_command(command)
+            if 'bad command' in result:
+                key = command
+                bad_result_dict[key] = result
+            else:
+                key = command
+                good_result_dict[key] = result
+    if (verbose == 'yes'):
+        print("\n".join([str for str in good_result_dict.values()]))
+    return bad_result_dict, good_result_dict
+
+
+try:
+    for device in devices['routers']:
+        bad_dict, good_dict = send_show_command(device, commands, 'no')
+        pprint(bad_dict)
+        pprint("*****")
+        pprint(good_dict)
+except netmiko.ssh_exception.NetMikoAuthenticationException:
+    print("Login or pass are not valid. Please check login/pass.")
+except netmiko.ssh_exception.NetMikoTimeoutException:
+    print("Connection to device {} timed-out".format(device['ip']))
