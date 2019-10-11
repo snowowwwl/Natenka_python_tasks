@@ -1,0 +1,16 @@
+- device_type: mikrotik_routeros
+  ip: 192.168.88.1
+  username: admin
+  password: disoriac
+  global_delay_factor: 5
+- device_type: mikrotik_routeros
+  ip: 192.168.88.2
+  username: admin
+  password: disoriac
+  global_delay_factor: 5
+- device_type: mikrotik_routeros
+  ip: 192.168.88.3
+  username: admin
+  password: disoriac
+  global_delay_factor: 5
+
