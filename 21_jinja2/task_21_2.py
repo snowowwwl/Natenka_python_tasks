@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 21.2
 
 На основе конфигурации config_r1.txt, создать шаблоны:
-* templates/cisco_base.txt - в нем должны быть все строки, кроме настройки alias и event manager. Имя хоста должно быть переменной hostname
+* templates/cisco_base.txt - в нем должны быть все строки, кроме настройки alias и event manager. Имя хоста должно быть
+переменной hostname
 * templates/alias.txt - в этот шаблон перенести все alias
 * templates/eem_int_desc.txt - в этом шаблоне должен быть event manager applet
 
@@ -23,4 +24,14 @@
 
 В качестве данных, используйте информацию из файла data_files/router_info.yml
 
-'''
+"""
+from task_21_1 import generate_config
+import yaml
+import sys
+sys.path.insert(0, 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/')
+
+with open('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/data_files/router_info.yml') as f:
+    var = yaml.safe_load(f)
+conf = generate_config('ospf.txt', var)
+with open('task_21_3_result.txt', 'w') as f:
+    f.write(conf)

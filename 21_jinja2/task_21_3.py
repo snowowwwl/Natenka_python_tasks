@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 21.3
 
 Создайте шаблон templates/ospf.txt на основе конфигурации OSPF в файле cisco_ospf.txt.
@@ -34,4 +34,15 @@
 Не копируйте код функции generate_config.
 
 
-'''
+"""
+from task_21_1 import generate_config
+import yaml
+import sys
+sys.path.insert(0, 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/')
+
+with open('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/data_files/ospf.yml') as f:
+    var = yaml.safe_load(f)
+
+conf = generate_config('ospf.txt', var)
+with open('task_21_3_result.txt', 'w') as f:
+    f.write(conf)
