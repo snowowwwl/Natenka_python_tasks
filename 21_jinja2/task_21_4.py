@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 21.4
 
 Создайте шаблон templates/add_vlan_to_switch.txt, который будет использоваться
@@ -26,4 +26,16 @@ interface Gi0/10
 Проверьте шаблон templates/add_vlan_to_switch.txt на данных в файле data_files/add_vlan_to_switch.yaml, с помощью функции generate_config из задания 21.1.
 Не копируйте код функции generate_config.
 
-'''
+"""
+
+from task_21_1 import generate_config
+import yaml
+import sys
+sys.path.insert(0, 'C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/')
+
+with open('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/data_files/add_vlan_to_switch.yaml') as f:
+    var = yaml.safe_load(f)
+
+conf = generate_config('add_vlan_to_switch.txt', var)
+with open('task_21_4_result.txt', 'w') as f:
+    f.write(conf)

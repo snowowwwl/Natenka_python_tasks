@@ -1,0 +1,5 @@
+device_type: mikrotik_routeros
+ip: 192.168.88.1
+username: admin
+password: disoriac
+

@@ -1,7 +1,15 @@
-vlan_id: 10
-name: Marketing
-access:
-  - Fa0/1
-trunk:
-  - Fa0/23
-  - Fa0/24
+vlans:
+- vlan_id: 10
+  name: Marketing
+  access:
+   - Fa0/1
+  trunk:
+   - Fa0/23
+   - Fa0/24
+- vlan_id: 11
+  name: Sales
+  access:
+   - Fa0/2
+  trunk:
+   - Fa0/23
+   - Fa0/24

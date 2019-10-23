@@ -25,6 +25,8 @@ cisco_vpn_1.txt и cisco_vpn_2.txt.
 cisco_vpn_1.txt и cisco_vpn_2.txt.
 '''
 
+from jinja2 import Environment, FileSystemLoader
+
 data = {
     'tun_num': 10,
     'wan_ip_1': '192.168.100.1',
@@ -33,3 +35,18 @@ data = {
     'tun_ip_2': '10.0.1.2 255.255.255.252'
 }
 
+def create_vpn_config(template1, template2, data_dict):
+    env = Environment(
+        loader=FileSystemLoader('C:/Users/snowowl/PycharmProjects/Natenka_python_tasks/21_jinja2/templates'),
+        trim_blocks=True, lstrip_blocks=True)
+    templ1 = env.get_template(template1)
+    templ2 = env.get_template(template2)
+    return (templ1.render(data_dict),templ2.render(data_dict))
+
+
+
+conf1, conf2 = create_vpn_config('gre_ipsec_vpn_1.txt', 'gre_ipsec_vpn_2.txt', data)
+with open('task_21_5_result1.txt', 'w') as f:
+    f.write(conf1)
+with open('task_21_5_result2.txt', 'w') as f:
+    f.write(conf2)
