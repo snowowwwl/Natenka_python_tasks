@@ -19,18 +19,18 @@ import textfsm
 from pprint import pprint
 
 
-def parse_output_to_dict(template_file, command_output):
+def parse_output_to_dict(template_file, command):
     with open(template_file) as template:
         fsm = textfsm.TextFSM(template)
-    with open(command_output) as f:
-        command = f.read()
-        result = fsm.ParseText(command)
+    result = fsm.ParseText(command)
     result_list = []
     for line in result:
         line_dict = {fsm.header[i]:line[i] for i in range(len(line))}
         result_list.append(line_dict)
     return result_list
-
-pprint(parse_output_to_dict('templates/sh_ip_int_br.template',
-                            'output/sh_ip_int_br.txt'))
+if __name__ == "__main__":
+    with open('output/sh_ip_int_br.txt') as f:
+        command = f.read()
+    pprint(parse_output_to_dict('templates/sh_ip_int_br.template',
+                            command))
 

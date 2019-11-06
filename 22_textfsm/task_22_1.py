@@ -28,9 +28,9 @@ def parse_command_output(template_file, command_output):
     result_list.append((fsm.header))
     result_list.append(result)
     return result_list
-
-pprint(parse_command_output('templates/sh_ip_int_br.template',
-                            'output/sh_ip_int_br.txt'))
+if __name__ == "__main__":
+    pprint(parse_command_output('templates/sh_ip_int_br.template',
+                                'output/sh_ip_int_br.txt'))
 
 
 
