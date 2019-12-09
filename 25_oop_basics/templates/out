@@ -1,0 +1,11 @@
+Flags: D - dynamic, X - disabled, R - running, S - slave
+ #     NAME                                TYPE       ACTUAL-MTU L2MTU
+ 0  R  ether1-gateway                      ether            1500  1598
+ 1   S ether2-master-local                 ether            1500  1598
+ 2   S ether3-slave-local                  ether            1500  1598
+ 3   S ether4-slave-local                  ether            1500  1598
+ 4   S ether5-slave-local                  ether            1500  1598
+ 5  RS wlan1                               wlan             1500  1600
+ 6  X  IPIP1                               ipip-tu...       1480 65535
+ 7  R  bridge-local                        bridge           1500  1598
+ 8     ipip-tun100                         ipip-tu...       1480 65535

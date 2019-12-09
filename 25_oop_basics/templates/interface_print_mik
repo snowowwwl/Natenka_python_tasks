@@ -1,0 +1,7 @@
+Value intf (\S+)
+Value type (\S+)
+Value mtu (\d+)
+Value l2mtu (\d+)
+
+Start
+  ^.+\w+\s+(\S+)?\s+${intf}\s+${type}\s+${mtu}\s+${l2mtu} -> Record

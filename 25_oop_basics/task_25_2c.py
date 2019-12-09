@@ -61,3 +61,76 @@ ValueError: При выполнении команды "logging 0255.255.1" на
 
 '''
 
+
+import telnetlib
+import time
+from pprint import pprint
+import textfsm
+
+r1_params = {
+    'ip': '192.168.88.1',
+    'username': 'admin',
+    'password': 'disoriac'
+    }
+
+class CiscoTelnet():
+    def __init__(self, params):
+        tn = telnetlib.Telnet(params['ip'])
+        self.ip = params['ip']
+        tn.read_until(b"Login: ")
+        username = self._write_line(params['username'])
+        tn.write(username)
+        tn.read_until(b"Password: ")
+        tn.write(self._write_line(params['password']))
+        self.tn = tn
+    def _write_line(self,line):
+       return bytes(line+"\r\n",'utf-8')
+    def send_show_command(self,command, template_file, parse = False):
+        self.tn.read_until(b'[admin@MikroTik] > ')
+        self.tn.write(self._write_line(command))
+        pprint(self._write_line(command))
+        time.sleep(2)
+        output = self.tn.read_very_eager().decode('ascii')
+        if parse == False:
+            return output
+        else:
+            with open(template_file) as template:
+                fsm = textfsm.TextFSM(template)
+                result = fsm.ParseText(output)
+            result_list = []
+            result_list.append((fsm.header))
+            result_list.append(result)
+            return result_list
+    def send_config_commands(self,command_list,strict=False):
+        if type(command_list) == str:
+            self.tn.read_until(b'[admin@MikroTik] > ')
+            self.tn.write(self._write_line(command_list))
+            pprint(self._write_line(command_list))
+            time.sleep(2)
+            output = self.tn.read_very_eager().decode('ascii')
+            if strict == False:
+                if "bad command" in output:
+                    pprint("При выполнении команды {} на устройстве {} возникла ошибка ->\n{} ".format(command_list, self.ip, output))
+            if strict == True:
+                if"bad command" in output:
+                    raise ValueError("При выполнении команды {} на устройстве {} возникла ошибка ->{} ".format(command_list, self.ip,
+                                                                                                  output))
+        if type(command_list) == list:
+            for command in command_list:
+                self.tn.read_until(b'[admin@MikroTik] > ')
+                self.tn.write(self._write_line(command))
+                pprint(self._write_line(command))
+                time.sleep(2)
+            output = self.tn.read_very_eager().decode('ascii')
+            if strict == False:
+                if "bad command" in output:
+                    pprint("При выполнении команды {} на устройстве {} возникла ошибка ->{} ".format(command_list, self.ip, output))
+            if strict == True:
+                if "bad command" in output:
+                    raise ValueError("При выполнении команды {} на устройстве {} возникла ошибка ->bad command \n {}".format(command_list, self.ip, output))
+        return output
+
+
+
+r1 = CiscoTelnet(r1_params)
+r1.send_config_commands(['interface 5','interface print'], strict = True)
