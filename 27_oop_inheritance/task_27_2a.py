@@ -30,3 +30,29 @@ ErrorInCommand                            Traceback (most recent call last)
 ErrorInCommand: При выполнении команды "sh ip br" на устройстве 192.168.100.1 возникла ошибка "Invalid input detected at '^' marker."
 
 '''
+from netmiko.mikrotik.mikrotik_ssh import MikrotikBase
+device_params = {
+    'device_type': 'mikrotik_routeros',
+    'ip': '192.168.88.1',
+    'username': 'admin',
+    'password': 'disoriac'
+}
+class ErrorInCommand(Exception):
+    """При выполнении команды возникла ошибка"""
+
+class MikrotikNetmiko(MikrotikBase):
+    def __init__(self,**device_params):
+        ssh = super().__init__(**device_params)
+        self.ip = device_params['ip']
+    def  _check_error_in_command(self, command, result):
+        if "bad command" in result:
+            raise ErrorInCommand("There are error on device {} during command execution {} -> {} ".format(self.ip, command, result))
+        else:
+            return result
+    def send_command(self,command_string):
+        result = super().send_command(command_string)
+        return self._check_error_in_command(command_string, result)
+
+
+r1 = MikrotikNetmiko(**device_params)
+print(r1.send_command('interface 5'))
