@@ -32,3 +32,40 @@ ErrorInCommand                            Traceback (most recent call last)
 ...
 ErrorInCommand: При выполнении команды "lo" на устройстве 192.168.100.1 возникла ошибка "Incomplete command."
 '''
+
+from netmiko.mikrotik.mikrotik_ssh import MikrotikBase
+device_params = {
+    'device_type': 'mikrotik_routeros',
+    'ip': '192.168.88.1',
+    'username': 'admin',
+    'password': 'disoriac'
+}
+class ErrorInCommand(Exception):
+    """При выполнении команды возникла ошибка"""
+
+class MikrotikNetmiko(MikrotikBase):
+    def __init__(self,**device_params):
+        ssh = super().__init__(**device_params)
+        self.ip = device_params['ip']
+    def  _check_error_in_command(self, command, result):
+        if "bad command" in result:
+            raise ErrorInCommand("There are error on device {} during command execution {} -> {} ".format(self.ip, command, result))
+        else:
+            return result
+    def send_command(self,command_string, **kwargs):
+        result = super().send_command(command_string)
+        return self._check_error_in_command(command_string, result)
+
+    def send_config_set(self, command_list, ignore_errors = True):
+        output = ""
+        if ignore_errors:
+            output = super().send_config_set(command_list)
+        else:
+            for command in command_list:
+                output += self.send_command(command)
+        return output
+
+
+
+r1 = MikrotikNetmiko(**device_params)
+print(r1.send_config_set(['interface 5','interface print'],ignore_errors = False ))
